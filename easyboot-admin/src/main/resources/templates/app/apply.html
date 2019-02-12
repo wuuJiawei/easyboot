@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>申请应用</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${ctx}/assets/module/admin.css"/>
+    <style>
+        .layui-form-item {
+            margin-bottom: 25px;
+        }
+
+        @media screen and (max-width: 1060px) {
+            .lay-step {
+                padding-left: 50px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 加载动画，移除位置在common.js中 -->
+<div class="page-loading">
+    <div class="rubik-loader"></div>
+</div>
+
+<!-- 关闭Tab时顶部标题 -->
+<div class="layui-body-header">
+    <span class="layui-body-header-title">申请</span>
+    <span class="layui-breadcrumb pull-right">
+        <a href="${ctx}/index">首页</a>
+        <a><cite>申请</cite></a>
+    </span>
+</div>
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body" style="padding-top: 40px;">
+
+            <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                <div carousel-item>
+                    <div>
+                        <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 60px;">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">应用名称:</label>
+                                <div class="layui-input-block">
+                                    <input type="text" placeholder="应用名称"
+                                           class="layui-input" name="name"
+                                           lay-verify="required" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">IP:</label>
+                                <div class="layui-input-block">
+                                    <input type="text" placeholder="IP"
+                                           class="layui-input" name="ip"
+                                           lay-verify="required" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">间隔时间:</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" placeholder="间隔时间"
+                                           class="layui-input" name="intervals"
+                                           lay-verify="required" required>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">秒</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">授权时间:</label>
+                                <div class="layui-input-block">
+                                    <input id="endTime" type="text" name="endTime" placeholder="请选择授权时间"
+                                           class="layui-input date-icon" lay-verify="required" required/>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">应用描述:</label>
+                                <div class="layui-input-block">
+                                    <textarea name="info" lay-verify="required" required
+                                              placeholder="应用描述" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="form">&emsp;创建应用&emsp;
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div>
+
+                        <div style="text-align: center;margin-top: 90px;">
+                            <i class="layui-icon layui-circle"
+                               style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                            <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">创建成功
+                            </div>
+                            <div style="font-size: 14px;color: #666;margin-top: 20px;">已提交审核</div>
+                        </div>
+
+                        <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 60px;">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">appKey:</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-form-mid layui-word-aux" id="appKey">123</div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">appSecret:</label>
+                                <div class="layui-input-block">
+                                    <div class="layui-form-mid layui-word-aux" id="appSecret">3333</div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <hr>
+
+            <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
+                <h3>说明</h3><br>
+                <p>暂无说明。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- js部分 -->
+<script type="text/javascript" src="/assets/libs/layui/layui.js"></script>
+<script type="text/javascript" src="/assets/js/common.js"></script>
+
+<script>
+    layui.use(['form', 'admin', 'notice', 'step', 'laydate'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var admin = layui.admin;
+        var notice = layui.notice;
+        var step = layui.step;
+        var laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#endTime',
+            type: 'datetime',
+            format: 'yyyy-MM-dd HH:mm:ss',
+            range: true
+        });
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            height: '620px',
+            stepItems: [{
+                title: '填写应用信息'
+            }, {
+                title: '完成'
+            }]
+        });
+
+        // 监听表单提交
+        form.on('submit(form)', function (data) {
+            var time = data.field.endTime.split(' - ');
+            data.field.beginTime = time[0];
+            data.field.endTime = time[1];
+
+            console.log(data.field);
+
+            admin.req('/app/apply', data.field, function (res) {
+                admin.message(res, function () {
+                    $('#appKey').html(res.object.appkey);
+                    $('#appSecret').html(res.object.appsecret);
+                    step.next('#stepForm');
+                });
+            }, 'post');
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

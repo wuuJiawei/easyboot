@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>所有系统日志</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="${ctx}/assets/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${ctx}/assets/module/admin.css" media="all"/>
+</head>
+
+<body>
+
+<!-- 加载动画，移除位置在common.js中 -->
+<div class="page-loading">
+    <div class="rubik-loader"></div>
+</div>
+
+<!-- 关闭Tab时顶部标题 -->
+<div class="layui-body-header">
+    <span class="layui-body-header-title">所有系统日志</span>
+    <span class="layui-breadcrumb pull-right">
+        <a href="${ctx}/index">首页</a>
+        <a><cite>所有系统日志</cite></a>
+    </span>
+</div>
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label w-auto">名称：</label>
+                        <div class="layui-input-inline mr0">
+                            <input id="edtSearch" class="layui-input" type="text" placeholder="输入关键字"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn icon-btn" id="btnSearch">
+                            <i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="layui-table" id="sys_log-table" lay-filter="sys_log-table"></table>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- js部分 -->
+<script type="text/javascript" src="${ctx}/assets/libs/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/assets/js/common.js"></script>
+
+<script>
+    layui.use(['layer', 'form', 'table', 'admin', 'laydate', 'clipboard', 'notice'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var admin = layui.admin;
+        var laydate = layui.laydate;
+        var notice = layui.notice;
+        var clipboard = layui.clipboard;
+        var DATA_UPDATE = {}; // 当前更新的列对象
+
+        // 渲染表格
+        var ins1 = table.render({
+            elem: '#sys_log-table',
+            url: '${ctx}/log/query',
+            page: true,
+            cellMinWidth: 100,
+            cols: [[
+                {field: 'logId', align: 'center', sort: true, title: '编号'},
+                {field: 'ctime', align: 'center', sort: true, title: '请求时间'},
+                {field: 'endtime', align: 'center', sort: true, title: '结束时间'},
+                {field: 'exctime', align: 'center', sort: true, title: '执行时间(秒)'},
+                {field: 'host', align: 'center', sort: true, title: '主机'},
+                {field: 'clasz', align: 'center', sort: true, title: '类名'},
+                {field: 'method', align: 'center', sort: true, title: '方法名'},
+                {field: 'params', align: 'center', sort: true, title: '参数'},
+                {field: 'message', align: 'center', sort: true, title: '消息'},
+                {field: 'uri', align: 'center', sort: true, title: '请求地址'},
+                {field: 'userId', align: 'center', sort: true, title: 'userid'},
+            ]]
+        });
+
+
+        //监听排序事件
+        table.on('sort(sys_log-table)', function(obj){
+            table.reload('sys_log-table', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    ,type: obj.type //排序方式
+                }
+            });
+        });
+
+
+        // 搜索按钮点击事件
+        $('#btnSearch').click(function () {
+            table.reload('sys_log-table', {
+                where: {
+                    param: $('#edtSearch').val()
+                }
+            });
+        });
+
+        $('.nav-btn dd').click(function () {
+            var type = $(this).attr('data-type');
+            action[type]();
+        });
+
+        var action = {
+            checkIds: function () {
+                var checkRows = table.checkStatus('sys_log-table');
+                if (checkRows.data.length != 0) {
+                    var ids = [];
+                    layui.each(checkRows.data, function (i, item) {
+                        ids.push(item.id);
+                    });
+                    return ids;
+                }
+                return null;
+            },
+            delete: function () {
+                var ids = action.checkIds();
+                if (ids == null) {
+                    return false;
+                }
+                admin.req('${ctx}/sys_log/delete', {
+                    id: ids.join(',')
+                }, function (res) {
+                    admin.message(res, function () {
+                        table.reload('sys_log-table');
+                    });
+                }, 'post');
+            },
+            dialog: function (data, disabled) {
+                for (var key in data) {
+                    var o = $('#detail-form *[name='+ key +']');
+                    o.val(data[key]);
+                    if (disabled && o.attr('readonly') == undefined) {
+                        o.attr('disabled', 'disabled');
+                    }
+                }
+
+                if (disabled) {
+                    $('#detail-form .btns').hide();
+                } else {
+                    $('#detail-form *[name]').removeAttr('disabled');
+                    $('#detail-form .btns').show();
+                }
+
+                admin.open({
+                    type: 1,
+                    title: data.name,
+                    shade: 0,
+                    area: ['890px', '430px'],
+                    content: $('#detail-modal')
+                });
+            }
+        };
+
+    });
+</script>
+</body>
+
+</html>

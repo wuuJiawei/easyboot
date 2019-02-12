@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>所有应用</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="${ctx}/assets/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${ctx}/assets/module/admin.css" media="all"/>
+    <style>
+
+    </style>
+</head>
+
+<body>
+
+<!-- 加载动画，移除位置在common.js中 -->
+<div class="page-loading">
+    <div class="rubik-loader"></div>
+</div>
+
+<!-- 关闭Tab时顶部标题 -->
+<div class="layui-body-header">
+    <span class="layui-body-header-title">所有应用</span>
+    <span class="layui-breadcrumb pull-right">
+        <a href="${ctx}/index">首页</a>
+        <a><cite>所有应用</cite></a>
+    </span>
+</div>
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label w-auto">名称：</label>
+                        <div class="layui-input-inline mr0">
+                            <input id="edtSearch" class="layui-input" type="text" placeholder="输入关键字"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态：</label>
+                        <div class="layui-input-inline">
+                            <select id="disabled">
+                                <option value="NO" selected>正常</option>
+                                <option value="YES">冻结</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn icon-btn" id="btnSearch">
+                            <i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                        <!-- 下拉按钮 -->
+                        <ul class="layui-nav nav-btn" style="margin-left: 10px;">
+                            <li class="layui-nav-item" lay-unselect>
+                                <a>&nbsp;更多&nbsp;</a>
+                                <dl class="layui-nav-child layui-anim-fadein align-right">
+                                    <dd lay-unselect data-type="disable"><a><i class="layui-icon layui-icon-snowflake"></i> 冻结 </a></dd>
+                                    <hr>
+                                    <dd lay-unselect data-type="delete"><a><i class="layui-icon layui-icon-delete"></i> 删除 </a></dd>
+                                </dl>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+            <table class="layui-table" id="app-table" lay-filter="app-table"></table>
+
+        </div>
+    </div>
+
+</div>
+
+<div style="display: none;" id="detail-modal">
+    <form class="layui-form model-form" id="detail-form">
+        <input type="hidden" name="id">
+        <div class="layui-form-item layui-row">
+            <div class=" layui-col-md6">
+                <label class="layui-form-label">appKey:</label>
+                <div class="layui-input-block">
+                    <input type="text" placeholder="appkey" class="layui-input" name="appkey"
+                           lay-verType="tips" lay-verify="required" required readonly/>
+                    <span class="layui-input-btn" data-clipboard-action="copy" data-clipboard-target="input[name=appkey]">复制</span>
+                </div>
+            </div>
+            <div class=" layui-col-md6">
+                <label class="layui-form-label">appSecret:</label>
+                <div class="layui-input-block">
+                    <input type="text" placeholder="appsecret" class="layui-input" name="appsecret"
+                           lay-verType="tips" lay-verify="required" required readonly/>
+                    <span class="layui-input-btn" data-clipboard-action="copy" data-clipboard-target="input[name=appsecret]">复制</span>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class=" layui-col-md6">
+                <label class="layui-form-label">名称:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="名称" class="layui-input"
+                           lay-verType="tips" lay-verify="required" required/>
+                </div>
+            </div>
+            <div class=" layui-col-md6">
+                <label class="layui-form-label">IP:</label>
+                <div class="layui-input-block">
+                    <input type="text" name="ip" placeholder="IP" class="layui-input"
+                           lay-verType="tips" lay-verify="required" required/>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">过期时间:</label>
+            <div class="layui-input-block">
+                <input id="endTime" type="text" name="endTime" placeholder="请选择过期时间"
+                       class="layui-input date-icon" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">应用描述:</label>
+            <div class="layui-input-block">
+                <textarea lay-verify="required" required name="info"
+                      placeholder="应用描述" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item btns">
+            <div class="layui-input-block text-right">
+                <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+                <button class="layui-btn" lay-filter="update-submit" lay-submit>保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="app-table-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详细信息</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<!-- js部分 -->
+<script type="text/javascript" src="${ctx}/assets/libs/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/assets/js/common.js"></script>
+
+<script>
+    layui.use(['layer', 'form', 'table', 'admin', 'laydate', 'clipboard', 'notice'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var admin = layui.admin;
+        var laydate = layui.laydate;
+        var notice = layui.notice;
+        var clipboard = layui.clipboard;
+        var DATA_UPDATE = {}; // 当前更新的列对象
+
+        var clipboard = new ClipboardJS('.layui-input-btn');
+        clipboard.on('success', function(e) {
+            notice.msg('复制成功', {icon: 1});
+        });
+        clipboard.on('error', function(e) {
+            notice.msg('复制失败', {icon: 2});
+        });
+
+        laydate.render({
+            elem: 'input[name=endTime]',
+            type: 'datetime',
+            format: 'yyyy-MM-dd HH:mm:ss'
+        });
+
+        // 渲染表格
+        var ins1 = table.render({
+            elem: '#app-table',
+            url: '${ctx}/app/query',
+            page: true,
+            autoSort: false,
+            cellMinWidth: 100,
+            cols: [[
+                {type: 'checkbox'},
+                {field: 'name', align: 'center', title: '名称'},
+                {field: 'ip', align: 'center', title: '绑定IP'},
+                {field: 'endTime', align: 'center', sort: true, title: '过期时间'},
+                {field: 'disabled', align: 'center', title: '状态',
+                    templet: function (d) {
+                        var check = d.disabled.value == 0 ? 'checked' : '';
+                        var h = '<input type="checkbox" value="YES" '
+                            + check +
+                            ' lay-filter="disabled" data-id="'+ d.id +'" lay-skin="switch" lay-text="正常|冻结"/>';
+                        return h;
+                    }
+                },
+                {align: 'center', toolbar: '#app-table-bar', title: '操作', minWidth: 180}
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(app-table)', function (obj) {
+            DATA_UPDATE = obj;
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值
+
+            if (layEvent === 'edit') {
+                action.dialog(data);
+            } else if (layEvent === 'del') {
+                admin.req('${ctx}/app/delete', {
+                    id: data.id
+                }, function (res) {
+                    admin.message(res, function () {
+                        obj.del();
+                    });
+                }, 'post')
+            } else if (layEvent === 'detail') {
+                action.dialog(data, true);
+            }
+        });
+
+        //监听排序事件
+        table.on('sort(app-table)', function(obj){
+            table.reload('app-table', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    ,type: obj.type //排序方式
+                }
+            });
+        });
+
+        form.on('switch(disabled)', function(data){
+            admin.req('${ctx}/app/update', {
+                id: $(data.elem).attr('data-id'),
+                disabled: data.elem.checked ? 'NO' : 'YES'
+            }, function (res) {
+                admin.message(res);
+            }, 'post')
+        });
+
+        form.on('submit(update-submit)', function(data){
+            admin.req('${ctx}/app/update', data.field, function (res) {
+                admin.message(res, function () {
+                    DATA_UPDATE.update(data.field);
+                    admin.closeAllDialog();
+                });
+            }, 'post');
+            return false;
+        });
+
+        // 搜索按钮点击事件
+        $('#btnSearch').click(function () {
+            table.reload('app-table', {
+                where: {
+                    param: $('#edtSearch').val(),
+                    disabled: $('#disabled').val()
+                }
+            });
+        });
+
+        $('.nav-btn dd').click(function () {
+            var type = $(this).attr('data-type');
+            action[type]();
+        });
+
+        var action = {
+            checkIds: function () {
+                var checkRows = table.checkStatus('app-table');
+                if (checkRows.data.length != 0) {
+                    var ids = [];
+                    layui.each(checkRows.data, function (i, item) {
+                        ids.push(item.id);
+                    });
+                    return ids;
+                }
+                return null;
+            },
+            delete: function () {
+                var ids = action.checkIds();
+                if (ids == null) {
+                    return false;
+                }
+                admin.req('${ctx}/app/delete', {
+                    id: ids.join(',')
+                }, function (res) {
+                    admin.message(res, function () {
+                       table.reload('app-table');
+                    });
+                }, 'post');
+            },
+            disable: function () {
+                var ids = action.checkIds();
+                if (ids == null) {
+                    return false;
+                }
+                admin.req('${ctx}/app/disable', {
+                    id: ids.join(',')
+                }, function (res) {
+                    admin.message(res, function () {
+                        table.reload('app-table');
+                    });
+                }, 'post');
+            },
+            dialog: function (data, disabled) {
+                for (var key in data) {
+                    var o = $('#detail-form *[name='+ key +']');
+                    o.val(data[key]);
+                    if (disabled && o.attr('readonly') == undefined) {
+                        o.attr('disabled', 'disabled');
+                    }
+                }
+
+                if (disabled) {
+                    $('#detail-form .btns').hide();
+                } else {
+                    $('#detail-form *[name]').removeAttr('disabled');
+                    $('#detail-form .btns').show();
+                }
+
+                admin.open({
+                    type: 1,
+                    title: data.name,
+                    shade: 0,
+                    area: ['890px', '430px'],
+                    content: $('#detail-modal')
+                });
+            }
+        };
+
+    });
+</script>
+</body>
+
+</html>

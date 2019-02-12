@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="favicon.ico" rel="icon">
+    <title>授权平台</title>
+    <link rel="stylesheet" href="${ctx}/assets/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="${ctx}/assets/module/admin.css"/>
+</head>
+
+<body class="layui-layout-body">
+
+<div class="layui-layout layui-layout-admin">
+
+    <!-- 头部 -->
+    <div class="layui-header">
+
+        <div class="layui-logo">
+            <img src="${ctx}/assets/images/logo.png"/>
+            <cite>&nbsp;授权平台&emsp;</cite>
+        </div>
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="flexible" title="侧边伸缩"><i class="layui-icon layui-icon-shrink-right"></i></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" lay-unselect>
+                <a id="btnMessage" title="消息"><i class="layui-icon layui-icon-notice"></i></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="note" title="便签"><i class="layui-icon layui-icon-note"></i></a>
+            </li>
+            <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                <a ew-event="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a>
+                    <img src="${ctx}/assets/images/head.png" class="layui-nav-img">
+                    <cite>管理员</cite>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd lay-unselect>
+                        <a ew-href="page/template/user-info.html">个人中心</a>
+                    </dd>
+                    <dd lay-unselect>
+                        <a id="setPsw">修改密码</a>
+                    </dd>
+                    <hr>
+                    <dd lay-unselect>
+                        <a id="btnLogout">退出</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" lay-unselect>
+                <a ew-event="theme" title="主题"><i class="layui-icon layui-icon-more-vertical"></i></a>
+            </li>
+        </ul>
+
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="layui-side">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree arrow2" lay-filter="admin-side-nav" lay-accordion="true"
+                style="margin: 15px 0;">
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-home"></i>&emsp;<cite>Dashboard</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="page/console/console.html">控制台</a></dd>
+                        <dd><a lay-href="page/console/console2.html">分析页</a></dd>
+                        <dd><a lay-href="page/console/welcome.html">欢迎页</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-template"></i>&emsp;<cite>模板页面</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a>表单页</a>
+                            <dl class="layui-nav-child">
+                                <dd><a lay-href="page/template/form/form-basic.html">基础表单</a></dd>
+                                <dd><a lay-href="page/template/form/form-advance.html">复杂表单</a></dd>
+                                <dd><a lay-href="page/template/form/form-step.html">分步表单</a></dd>
+                            </dl>
+                        </dd>
+                        <dd>
+                            <a>表格页</a>
+                            <dl class="layui-nav-child">
+                                <dd><a lay-href="page/template/table/table-basic.html">数据表格</a></dd>
+                                <dd><a lay-href="page/template/table/table-advance.html">复杂查询</a></dd>
+                                <dd><a lay-href="page/template/table/table-tree.html">树形表格</a></dd>
+                                <dd><a lay-href="page/template/table/table-ltrt.html">左树右表</a></dd>
+                                <dd><a lay-href="page/template/table/table-img.html">表格缩略图</a></dd>
+                            </dl>
+                        </dd>
+                        <dd>
+                            <a>错误页</a>
+                            <dl class="layui-nav-child">
+                                <dd><a lay-href="page/template/error/error-500.html">500</a></dd>
+                                <dd><a lay-href="page/template/error/error-404.html">404</a></dd>
+                                <dd><a lay-href="page/template/error/error-403.html">403</a></dd>
+                            </dl>
+                        </dd>
+                        <dd>
+                            <a>登录页</a>
+                            <dl class="layui-nav-child">
+                                <dd><a href="page/login/login.html" target="_blank">登录一</a></dd>
+                                <dd><a href="page/login/login2.html" target="_blank">登录二</a></dd>
+                                <dd><a href="page/login/login3.html" target="_blank">登录三</a></dd>
+                            </dl>
+                        </dd>
+                        <dd><a lay-href="page/template/user-info.html">个人中心</a></dd>
+                        <dd><a lay-href="page/template/file/fileMain.html">文件管理</a></dd>
+                        <dd><a lay-href="page/other/empty.html">空白页</a></dd>
+                        <dd><a href="page/other/side-more.html" target="_blank">多系统</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a><i class="layui-icon layui-icon-app"></i>&emsp;<cite>扩展组件</cite></a>
+                    <dl class="layui-nav-child">
+                        <dd><a lay-href="page/plugin/dropdown.html">下拉菜单</a></dd>
+                        <dd><a lay-href="page/plugin/notice.html">消息通知</a></dd>
+                        <dd><a lay-href="page/plugin/dialog.html">admin风格弹窗</a></dd>
+                        <dd><a lay-href="page/plugin/other.html">更多扩展</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 主体部分 -->
+    <div class="layui-body">
+        <div class="layui-tab" lay-allowClose="true" lay-filter="admin-pagetabs">
+            <ul class="layui-tab-title">
+            </ul>
+            <div class="layui-tab-content">
+            </div>
+        </div>
+        <div class="layui-icon admin-tabs-control layui-icon-prev" ew-event="leftPage"></div>
+        <div class="layui-icon admin-tabs-control layui-icon-next" ew-event="rightPage"></div>
+        <div class="layui-icon admin-tabs-control layui-icon-down">
+            <ul class="layui-nav admin-tabs-select" lay-filter="admin-pagetabs-nav">
+                <li class="layui-nav-item" lay-unselect>
+                    <a href="javascript:;"></a>
+                    <dl class="layui-nav-child layui-anim-fadein">
+                        <dd ew-event="closeThisTabs" lay-unselect><a href="javascript:;">关闭当前标签页</a></dd>
+                        <dd ew-event="closeOtherTabs" lay-unselect><a href="javascript:;">关闭其它标签页</a></dd>
+                        <dd ew-event="closeAllTabs" lay-unselect><a href="javascript:;">关闭全部标签页</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="layui-footer">
+        Copyright © 2018 <a href="https://easyweb.vip" target="_blank">授权平台</a> All rights reserved.
+        <span class="pull-right">Version 3.0.9</span>
+    </div>
+
+    <!-- 手机屏幕遮罩层 -->
+    <div class="site-mobile-shade"></div>
+
+</div>
+
+<!-- 加载动画，移除位置在common.js中 -->
+<div class="page-loading">
+    <div class="rubik-loader"></div>
+</div>
+
+<!-- js部分 -->
+<script type="text/javascript" src="${ctx}/assets/libs/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/assets/js/common.js"></script>
+<script>
+    layui.use(['layer', 'element', 'admin', 'index', 'laytpl', 'notice'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var admin = layui.admin;
+        var index = layui.index;
+        var laytpl = layui.laytpl;
+        var element = layui.element;
+        notice = layui.notice;
+
+        index.loadSetting();  // 加载本地缓存的设置属性
+
+        // ajax渲染侧边栏
+        $.get('${ctx}/menu/sidebar', function (res) {
+            laytpl(sideNav.innerHTML).render(res.object, function (html) {
+                $('*[lay-filter=admin-side-nav]').append(html);
+                element.render('nav');
+            });
+        }, 'json');
+
+        // 默认加载主页
+        index.loadView({
+            menuPath: 'page/console/console.html',
+            menuName: '<i class="layui-icon layui-icon-home"></i>'
+        });
+
+        // 消息点击事件
+        $('#btnMessage').click(function () {
+            admin.popupRight({
+                type: 2,
+                content: 'page/tpl/tpl-message.html'
+            });
+        });
+
+        // 修改密码点击事件
+        $('#setPsw').click(function () {
+            admin.open({
+                type: 2,
+                title: '修改密码',
+                shade: 0,
+                content: 'page/tpl/tpl-password.html'
+            });
+        });
+
+        // 退出登录点击事件
+        $('#btnLogout').click(function () {
+            layer.confirm('确定退出登录？', {
+                skin: 'layui-layer-admin'
+            }, function () {
+                location.replace('page/other/login.html');
+            });
+        });
+
+    });
+</script>
+<!-- 侧边栏渲染模板 -->
+<script id="sideNav" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <li class="layui-nav-item">
+        <a href="javascript:;" lay-href="{{item.url}}"><i class="{{item.icon}}"></i>&emsp;<cite>{{item.name }}</cite></a>
+        {{# if(item.subMenus&&item.subMenus.length>0){ }}
+        <dl class="layui-nav-child">
+            {{# layui.each(item.subMenus, function(index, subItem){ }}
+            <dd>
+                <a href="javascript:;" lay-href="{{ subItem.url }}">{{ subItem.name }}</a>
+                {{# if(subItem.subMenus&&subItem.subMenus.length>0){ }}
+                <dl class="layui-nav-child">
+                    {{# layui.each(subItem.subMenus, function(index, thrItem){ }}
+                    <dd><a href="javascript:;" lay-href="{{ thrItem.url }}">{{ thrItem.name }}</a></dd>
+                    {{# }); }}
+                </dl>
+                {{# } }}
+            </dd>
+            {{# }); }}
+        </dl>
+        {{# } }}
+    </li>
+    {{#  }); }}
+</script>
+
+<script type='text/javascript' src='${ctx}/assets/libs/easemob/webim.config.js'></script>
+<script type='text/javascript' src='${ctx}/assets/libs/easemob/strophe-1.2.8.min.js'></script>
+<script type='text/javascript' src='${ctx}/assets/libs/easemob/websdk-1.4.12.js'></script>
+<script>
+    var conn = new WebIM.connection({
+        isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
+        https: typeof WebIM.config.https === 'boolean' ? WebIM.config.https : location.protocol === 'https:',
+        url: WebIM.config.xmppURL,
+        heartBeatWait: WebIM.config.heartBeatWait,
+        autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
+        autoReconnectInterval: WebIM.config.autoReconnectInterval,
+        apiUrl: WebIM.config.apiURL,
+        isAutoLogin: true
+    });
+
+    var options = {
+        apiUrl: WebIM.config.apiURL,
+        user: 'admin',
+        pwd: 'admin',
+        appKey: WebIM.config.appkey
+    };
+    conn.open(options);
+
+    conn.listen({
+        onOpened: function ( message ) {          //连接成功回调
+            notice.success({
+                title: '消息通知',
+                message: 'IM连接成功！'
+            });
+        },
+        onClosed: function ( message ) {},         //连接关闭回调
+        onTextMessage: function ( message ) {
+            notice.info({
+                title: '消息通知',
+                message: message.data
+            });
+        },    //收到文本消息
+        onEmojiMessage: function ( message ) {},   //收到表情消息
+        onPictureMessage: function ( message ) {}, //收到图片消息
+        onCmdMessage: function ( message ) {},     //收到命令消息
+        onAudioMessage: function ( message ) {},   //收到音频消息
+        onLocationMessage: function ( message ) {},//收到位置消息
+        onFileMessage: function ( message ) {},    //收到文件消息
+        onVideoMessage: function (message) {
+            var node = document.getElementById('privateVideo');
+            var option = {
+                url: message.url,
+                headers: {
+                    'Accept': 'audio/mp4'
+                },
+                onFileDownloadComplete: function (response) {
+                    var objectURL = WebIM.utils.parseDownloadResponse.call(conn, response);
+                    node.src = objectURL;
+                },
+                onFileDownloadError: function () {
+                    console.log('File down load error.')
+                }
+            };
+            WebIM.utils.download.call(conn, option);
+        },   //收到视频消息
+        onPresence: function ( message ) {},       //处理“广播”或“发布-订阅”消息，如联系人订阅请求、处理群组、聊天室被踢解散等消息
+        onRoster: function ( message ) {},         //处理好友申请
+        onInviteMessage: function ( message ) {},  //处理群组邀请
+        onOnline: function () {},                  //本机网络连接成功
+        onOffline: function () {},                 //本机网络掉线
+        onError: function ( message ) {},          //失败回调
+        onBlacklistUpdate: function (list) {       //黑名单变动
+                                                   // 查询黑名单，将好友拉黑，将好友从黑名单移除都会回调这个函数，list则是黑名单现有的所有好友信息
+            console.log(list);
+        },
+        onReceivedMessage: function(message){},    //收到消息送达服务器回执
+        onDeliveredMessage: function(message){},   //收到消息送达客户端回执
+        onReadMessage: function(message){},        //收到消息已读回执
+        onCreateGroup: function(message){},        //创建群组成功回执（需调用createGroupNew）
+        onMutedMessage: function(message){}        //如果用户在A群组被禁言，在A群发消息会走这个回调并且消息不会传递给群其它成员
+    });
+
+</script>
+</body>
+
+</html>
