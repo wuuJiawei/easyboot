@@ -1,4 +1,4 @@
-package com.easyboot.controller.generator;
+package com.easyboot.controller;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
@@ -13,15 +13,16 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.easyboot.bean.Menu;
+import com.easyboot.bean.enums.MenuType;
 import com.easyboot.bean.enums.YesOrNo;
 import com.easyboot.common.Constants;
 import com.easyboot.common.ResultBean;
 import com.easyboot.common.layui.LayTable;
 import com.easyboot.common.layui.LayTableArg;
 import com.easyboot.config.log.annotation.Log;
-import com.easyboot.support.BaseController;
 import com.easyboot.service.IGeneratorService;
 import com.easyboot.service.IMenuService;
+import com.easyboot.support.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +54,7 @@ public class GeneratorController extends BaseController{
 
     @GetMapping("/")
     public String page(){
-        return "generator/page";
+        return "generator";
     }
 
     @PostMapping("query/table")
@@ -205,7 +206,7 @@ public class GeneratorController extends BaseController{
         menu.setMenuName(table.getComment());
         menu.setOrders(1);
         menu.setPid(0);
-        menu.setType(1);
+        menu.setType(MenuType.MENU);
         menu.setUrl("/" + table.getEntityPath() + "/");
         return menuService.save(menu);
     }

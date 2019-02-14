@@ -47,7 +47,7 @@ public class PasswordHelper {
     public static void main(String[] args) {
         PasswordHelper passwordHelper = new PasswordHelper();
         User user = new User();
-        user.setPhone("admin");
+        user.setPhone("18018266280");
         user.setPassword("admin");
         passwordHelper.encryptPassword(user).print();
     }

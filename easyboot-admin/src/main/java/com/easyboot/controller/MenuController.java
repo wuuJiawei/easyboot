@@ -3,6 +3,7 @@ package com.easyboot.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.easyboot.bean.enums.MenuType;
 import com.easyboot.common.ResultBean;
 import com.easyboot.bean.Menu;
 import com.easyboot.bean.enums.YesOrNo;
@@ -38,7 +39,12 @@ public class MenuController extends BaseController {
     @GetMapping("sidebar")
     @ResponseBody
     public ResultBean getSideBar(){
-        List<Menu> menus = menuService.list(new QueryWrapper<Menu>().eq("disabled", YesOrNo.NO).orderByAsc("orders"));
+        List<Menu> menus = menuService.list(
+                new QueryWrapper<Menu>()
+                        .eq("disabled", YesOrNo.NO)
+                        .eq("type", MenuType.MENU)
+                        .orderByAsc("orders")
+        );
         List<Map> menuList = getMenuTree(menus, 0);
         return ResultBean.ok(menuList);
     }

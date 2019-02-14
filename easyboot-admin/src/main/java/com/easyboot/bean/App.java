@@ -56,11 +56,13 @@ public class App implements Serializable {
     /**
      * 审核状态：0-未审核，1-通过，2-拒绝
      */
+    @TableField("verify_status")
     private Verify verifyStatus;
 
     /**
      * 审核说明
      */
+    @TableField("verify_info")
     private String verifyInfo;
 
     private String logo;

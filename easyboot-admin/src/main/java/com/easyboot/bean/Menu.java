@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.easyboot.bean.enums.MenuType;
 import com.easyboot.bean.enums.YesOrNo;
 
 import java.io.Serializable;
@@ -49,7 +50,7 @@ public class Menu implements Serializable {
     /**
      * 类型：0-按钮，1-菜单
      */
-    private Integer type;
+    private MenuType type;
 
     public Integer getMenuId() {
         return menuId;
@@ -107,11 +108,11 @@ public class Menu implements Serializable {
     public void setPermission(String permission) {
         this.permission = permission;
     }
-    public Integer getType() {
+    public MenuType getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(MenuType type) {
         this.type = type;
     }
 
